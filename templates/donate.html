@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Donate{% endblock %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="text-center mb-4">
+        <h1>Support Our Cause</h1>
+        <p style="font-style: italic; font-size: 20px;">Your contribution can make a significant difference in the lives
+            of young women in need.</p>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Bank Details</h2>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">Bank Name:</th>
+                        <td>XYZ Bank</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Account Name:</th>
+                        <td>Parisu Charitable and Educational Trust</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Account Number:</th>
+                        <td>123456789</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">IFSC Code:</th>
+                        <td>XYZB0000123</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Branch:</th>
+                        <td>Chennai</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6 text-center">
+            <h2>QR Code</h2>
+            <img src="static/qrcode.png" alt="QR Code" class="img-fluid" style="width: 300px; height: 300px;">
+            <p class="mt-2">Scan this QR code to donate via UPI</p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <p>Parisu Charitable and Educational Trust relies on the generosity of individuals like you to continue our
+            mission of empowering young women through education and support. Your donations help us provide
+            scholarships, mentorship programs, and other essential services. Every contribution, no matter the size,
+            helps make a significant impact.</p>
+        <p>Please use the bank details provided to make a direct transfer, or scan the QR code for a quick and easy UPI
+            payment. We are deeply grateful for your support.</p>
+    </div>
+</div>
+{% endblock %}

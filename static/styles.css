@@ -1,0 +1,195 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@700&display=swap');
+
+/* Set full height for HTML and body elements */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif; /* Use Roboto for body text */
+}
+
+/* Basic styling for body */
+body {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    background-color: #f0f0f5;
+    color: #333;
+}
+
+/* Main content styling */
+.content {
+    flex: 1;
+    padding: 1.5rem; /* Adds padding to content */
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 1rem;
+    border-radius: 10px;
+}
+
+/* Header styling */
+header {
+    font-family: 'Montserrat', sans-serif; /* Use Montserrat for header text */
+    background-color: rgb(225, 175, 209); /* Use blue from the logo */
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer styling */
+footer {
+    background-color: #0056A4; /* Use blue from the logo */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    width: 100%; /* Ensure footer spans the entire width */
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer content styling */
+.footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.footer-content .mb-0 {
+    margin-top: 0.1rem;
+}
+
+/* Logo styling */
+.logo {
+    max-width: 150px; /* Set the maximum width of the logo */
+    margin-bottom: 10px; /* Add some margin below the logo */
+}
+
+/* Wrapper styling */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Set minimum height to 100% of viewport height */
+}
+
+/* Main section styling */
+main {
+    flex: 1; /* Fill remaining vertical space */
+}
+
+/* Navbar styling */
+nav {
+    margin-bottom: 1rem;
+    background-color: #0056A4; /* Use blue from the logo */
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.navbar-nav {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+}
+
+.navbar-nav li {
+    margin: 0.1rem;
+}
+
+.navbar-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif; /* Use Roboto for nav links */
+}
+
+/* Carousel item styling */
+.carousel-item {
+    height: 475px; /* Set a fixed height for the carousel */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Carousel image styling */
+.carousel-image {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* Ensure the image covers the entire carousel area */
+}
+
+/* Login form styling */
+.login-form {
+    display: grid;
+    place-items: center; /* Center the login form */
+}
+
+/* Form group margin */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Form label margin */
+.form-label {
+    margin-bottom: 0.5rem;
+    font-weight: 500; /* Slightly bolder labels */
+}
+
+/* Login box styling */
+.login-box {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Button styling */
+button {
+    background-color: #0056A4; /* Use blue from the logo */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #003f7a; /* Darker shade of blue for hover effect */
+}
+
+/* Links styling */
+a {
+    color: #0056A4; /* Use blue from the logo */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #003f7a; /* Darker shade of blue for hover effect */
+}
+
+/* Alert styling */
+.alert {
+    background-color: #FFD700; /* Use yellow from the logo */
+    color: #333;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-success {
+    background-color: #00A651; /* Use green from the logo */
+}
+
+.alert-error {
+    background-color: #E94E1B; /* Use red from the logo */
+}
