@@ -39,7 +39,7 @@ header {
 
 /* Footer styling */
 footer {
-    background-color: #0056A4; /* Use blue from the logo */
+    background-color: rgb(225, 175, 209); /* Use blue from the logo */
     color: white;
     padding: 1rem;
     text-align: center;
