@@ -23,7 +23,7 @@ def save_requests(requests):
     with open(data_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
             file,
-            fieldnames=["id", "name", "email", "school/college", "program", "details"],
+            fieldnames=["id", "name", "email", "school", "program", "details"],
         )
         writer.writeheader()
         writer.writerows(requests)
@@ -41,7 +41,7 @@ def submit():
             "id": str(len(load_requests()) + 1),
             "name": request.form.get("name"),
             "email": request.form.get("email"),
-            "school/college": request.form.get("school/college"),
+            "school": request.form.get("school"),
             "program": request.form.get("program"),
             "details": request.form.get("details"),
         }
