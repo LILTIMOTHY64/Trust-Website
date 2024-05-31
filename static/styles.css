@@ -136,6 +136,12 @@ nav {
     font-weight: 500; /* Slightly bolder labels */
 }
 
+.form-control[type="file"] {
+    display: block;
+    margin: 0 auto;
+    padding: 0.2rem;
+}
+
 /* Login box styling */
 .login-box {
     background-color: white;
