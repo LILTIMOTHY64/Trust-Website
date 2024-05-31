@@ -1,10 +1,18 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from werkzeug.utils import secure_filename
+import os
 import csv
 
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
-data_file = "requests.csv"
+UPLOAD_FOLDER = r"uploads/IDs"
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+data_file = r"uploads/requests.csv"
+
+# Ensure the upload directory exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 def load_requests():
@@ -23,7 +31,7 @@ def save_requests(requests):
     with open(data_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
             file,
-            fieldnames=["id", "name", "email", "school", "program", "details"],
+            fieldnames=["id", "name", "email", "school", "program", "details", "identity_proof"],
         )
         writer.writeheader()
         writer.writerows(requests)
@@ -34,23 +42,51 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/submit", methods=["GET", "POST"])
+@app.route('/submit', methods=['GET', 'POST'])
 def submit():
-    if request.method == "POST":
-        new_request = {
-            "id": str(len(load_requests()) + 1),
-            "name": request.form.get("name"),
-            "email": request.form.get("email"),
-            "school": request.form.get("school"),
-            "program": request.form.get("program"),
-            "details": request.form.get("details"),
-        }
+    if request.method == 'POST':
+        # Get form data
+        name = request.form['name']
+        email = request.form['email']
+        school = request.form['school']
+        program = request.form['program']
+        details = request.form['details']
+
+        # Load existing requests to determine the new request ID
         requests = load_requests()
-        requests.append(new_request)
-        save_requests(requests)
-        flash("Request submitted successfully!", "success")  # Flash success message
-        return redirect(url_for("index"))
-    return render_template("submit.html")
+        new_id = len(requests) + 1
+
+        # Get the uploaded file
+        if 'identity_proof' not in request.files:
+            flash('No file part', 'error')
+            return redirect(request.url)
+        file = request.files['identity_proof']
+        if file.filename == '':
+            flash('No selected file', 'error')
+            return redirect(request.url)
+        if file:
+            # Rename the file to the request ID before saving
+            filename = secure_filename(f"{new_id}_{file.filename}")
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+            # Save form data to the CSV file
+            new_request = {
+                "id": new_id,
+                "name": name,
+                "email": email,
+                "school": school,
+                "program": program,
+                "details": details,
+                "identity_proof": file_path
+            }
+            requests.append(new_request)
+            save_requests(requests)
+
+            flash('Request submitted successfully', 'success')
+            return redirect(url_for('index'))
+
+    return render_template('submit.html')
 
 
 @app.route("/admin_login", methods=["GET", "POST"])
