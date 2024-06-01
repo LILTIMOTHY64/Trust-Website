@@ -29,9 +29,9 @@ body {
 
 /* Header styling */
 header {
-    font-family: 'Montserrat', sans-serif; /* Use Montserrat for header text */
+    font-family: 'Georgia', sans-serif; /* Use Montserrat for header text */
     background-color: rgb(225, 175, 209); /* Use blue from the logo */
-    color: white;
+    color: #116BA7;;
     padding: 1.5rem;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -39,8 +39,9 @@ header {
 
 /* Footer styling */
 footer {
+    font-family: 'Georgia', sans-serif;
     background-color: rgb(225, 175, 209); /* Use blue from the logo */
-    color: white;
+    color: #116BA7;;
     padding: 1rem;
     text-align: center;
     width: 100%; /* Ensure footer spans the entire width */
@@ -156,7 +157,7 @@ nav {
 
 /* Button styling */
 button {
-    background-color: #0056A4; /* Use blue from the logo */
+    background-color: #E1AFD1; /* Use blue from the logo */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -168,18 +169,18 @@ button {
 }
 
 button:hover {
-    background-color: #003f7a; /* Darker shade of blue for hover effect */
+    background-color: #7a007a; /* Darker shade of blue for hover effect */
 }
 
 /* Links styling */
 a {
-    color: #0056A4; /* Use blue from the logo */
+    color: #00a426; /* Use blue from the logo */
     text-decoration: none;
     transition: color 0.3s;
 }
 
 a:hover {
-    color: #003f7a; /* Darker shade of blue for hover effect */
+    color: #7a0062; /* Darker shade of blue for hover effect */
 }
 
 /* Alert styling */

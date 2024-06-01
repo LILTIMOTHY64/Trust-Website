@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, flash
 from werkzeug.utils import secure_filename
 import os
 import csv
@@ -8,6 +8,9 @@ app.secret_key = "your_secret_key"
 
 UPLOAD_FOLDER = r"uploads/IDs"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+CSV_FOLDER = r"uploads"
+app.config['CSV_FOLDER'] = CSV_FOLDER
 
 data_file = r"uploads/requests.csv"
 
@@ -102,16 +105,25 @@ def admin_login():
     return render_template("admin_login.html")
 
 
-@app.route("/requests")
+@app.route("/requests", methods=['GET', 'POST'])
 def requests():
     requests = load_requests()
     return render_template("requests.html", requests=requests)
+
+@app.route('/admin/download-csv')
+def download_csv():
+    # Send the CSV file as a download
+    return send_from_directory(app.config['CSV_FOLDER'], 'requests.csv', as_attachment=True)
 
 
 @app.route("/donate")
 def donate():
     return render_template("donate.html")
 
+@app.route("/gallery")
+def gallery():
+    return render_template("gallery.html")
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
