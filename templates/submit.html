@@ -6,11 +6,14 @@
 <div class="container pb-5">
     <div class="card mt-3">
         <div class="card-header">
-            <h2 class="card-title">Submit Request</h2>
+            <h2 class="card-title">Submit Help Request</h2>
         </div>
         <div class="card-body">
             <p>
-                Please use the form below to submit your request, whether it's for additional resources, specific programs, or any other needs you may have. Our team will review your submission and get back to you as soon as possible.
+                We are here to support and empower women from all walks of life. Whether you are seeking educational resources, career guidance, personal assistance, or any other form of support, we are here to help. Please take a moment to fill out the form below with your request, detailing your specific needs or circumstances. 
+            </p>
+            <p>
+                Our dedicated team will carefully review your submission and reach out to you with the necessary support and guidance as soon as possible. Your journey towards a better future is important to us, and we are committed to providing the assistance you need.
             </p>
             <p>
                 Kindly provide detailed and accurate information to help us understand your requirements better.
@@ -25,15 +28,31 @@
                     <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email address" required>
                 </div>
                 <div class="form-group">
-                    <label for="school">School/College</label>
-                    <input type="text" class="form-control" id="school" name="school" placeholder="Enter your school or college name" required>
+                    <label for="number">Phone Number</label>
+                    <input type="text" class="form-control" id="number" name="number" placeholder="Enter your phone number" required>
                 </div>
                 <div class="form-group">
-                    <label for="program">Program</label>
-                    <input type="text" class="form-control" id="program" name="program" placeholder="Enter your program or course" required>
+                    <label for="school">School/College (If Applicable)</label>
+                    <input type="text" class="form-control" id="school" name="school" placeholder="Enter your school or college name" >
                 </div>
                 <div class="form-group">
-                    <label for="details">Details</label>
+                    <label for="year">Year of Study (If Applicable)</label>
+                    <input type="text" class="form-control" id="year" name="year" placeholder="Enter your year Study" >
+                </div>
+                <div class="form-group">
+                    <label for="purpose">Purpose of Help Request</label>
+                    <select class="form-control" id="purpose" name="purpose" required>
+                        <option value="">Select Purpose</option>
+                        <option value="Tuition Fees">Tuition Fees</option>
+                        <option value="Books and Supplies">Books and Supplies</option>
+                        <option value="Accommodation">Accommodation</option>
+                        <option value="Travel Expenses">Travel Expenses</option>
+                        <option value="Travel Expenses">Medical Expenses</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="details">Details </label>
                     <textarea class="form-control" id="details" name="details" rows="5" placeholder="Provide detailed information about your request" required></textarea>
                 </div>
                 <div class="form-group">

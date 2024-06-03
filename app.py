@@ -34,7 +34,7 @@ def save_requests(requests):
     with open(data_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
             file,
-            fieldnames=["id", "name", "email", "school", "program", "details", "identity_proof"],
+            fieldnames=["id", "name", "email","number", "school", "year","purpose", "details", "identity_proof"],
         )
         writer.writeheader()
         writer.writerows(requests)
@@ -51,8 +51,10 @@ def submit():
         # Get form data
         name = request.form['name']
         email = request.form['email']
+        number = request.form['number']
         school = request.form['school']
-        program = request.form['program']
+        year = request.form['year']
+        purpose = request.form['purpose']
         details = request.form['details']
 
         # Load existing requests to determine the new request ID
@@ -69,7 +71,8 @@ def submit():
             return redirect(request.url)
         if file:
             # Rename the file to the request ID before saving
-            filename = secure_filename(f"{new_id}_{file.filename}")
+            file_ext = os.path.splitext(file.filename)[1]
+            filename = secure_filename(f"{new_id}{file_ext}")
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
 
@@ -78,8 +81,10 @@ def submit():
                 "id": new_id,
                 "name": name,
                 "email": email,
+                "number": number,
                 "school": school,
-                "program": program,
+                "year": year,
+                "purpose":purpose,
                 "details": details,
                 "identity_proof": file_path
             }

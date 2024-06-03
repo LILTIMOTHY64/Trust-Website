@@ -200,3 +200,26 @@ a:hover {
 .alert-error {
     background-color: #E94E1B; /* Use red from the logo */
 }
+
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    text-align: left;
+}
+
+/* Add any custom styles for the modal here */
+.modal-body {
+    padding: 2rem;
+}
+
+.modal-lg {
+    max-width: 80%;
+}
