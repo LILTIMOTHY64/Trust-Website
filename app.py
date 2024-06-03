@@ -6,16 +6,21 @@ import csv
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
-UPLOAD_FOLDER = r"uploads/IDs"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+REQUEST_UPLOAD_FOLDER = r"uploads/REQ_IDs"
+app.config['REQUEST_UPLOAD_FOLDER'] = REQUEST_UPLOAD_FOLDER
+
+VOLUNTEER_UPLOAD_FOLDER = r"uploads/VOL_IDs"
+app.config['VOLUNTEER_UPLOAD_FOLDER'] = VOLUNTEER_UPLOAD_FOLDER
 
 CSV_FOLDER = r"uploads"
 app.config['CSV_FOLDER'] = CSV_FOLDER
 
 data_file = r"uploads/requests.csv"
 
+volunteer_file = r"uploads/volunteer.csv"
+
 # Ensure the upload directory exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(REQUEST_UPLOAD_FOLDER, exist_ok=True)
 
 
 def load_requests():
@@ -38,6 +43,26 @@ def save_requests(requests):
         )
         writer.writeheader()
         writer.writerows(requests)
+
+def load_volunteers():
+    volunteers = []
+    try:
+        with open(volunteer_file, mode="r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                volunteers.append(row)
+    except FileNotFoundError:
+        pass
+    return volunteers
+
+def save_volunteers(volunteers):
+    with open(volunteer_file, mode="w", newline="") as file:
+        writer = csv.DictWriter(
+            file,
+            fieldnames=["name", "email", "phone", "address", "identity_proof"],
+        )
+        writer.writeheader()
+        writer.writerows(volunteers)
 
 
 @app.route("/")
@@ -72,8 +97,8 @@ def submit():
         if file:
             # Rename the file to the request ID before saving
             file_ext = os.path.splitext(file.filename)[1]
-            filename = secure_filename(f"{new_id}{file_ext}")
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            filename = secure_filename(f"{name}{file_ext}")
+            file_path = os.path.join(app.config['REQUEST_UPLOAD_FOLDER'], filename)
             file.save(file_path)
 
             # Save form data to the CSV file
@@ -129,6 +154,47 @@ def donate():
 def gallery():
     return render_template("gallery.html")
     
+@app.route('/volunteer', methods=['GET', 'POST'])
+def volunteer():
+    if request.method == 'POST':
+        # Get form data
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        address = request.form['address']
+
+        # Handle file upload
+        if 'identity_proof' not in request.files:
+            flash('No file part', 'error')
+            return redirect(request.url)
+        file = request.files['identity_proof']
+        if file.filename == '':
+            flash('No selected file', 'error')
+            return redirect(request.url)
+        if file:
+            file_ext = os.path.splitext(file.filename)[1]
+            filename = secure_filename(f"{name}{file_ext}")
+            file_path = os.path.join(app.config['VOLUNTEER_UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+        # Load existing volunteers
+        volunteers = load_volunteers()
+
+        # Save form data to the CSV file
+        new_volunteer = {
+            "name": name,
+            "email": email,
+            "phone": phone,
+            "address": address,
+            "identity_proof": file_path
+        }
+        volunteers.append(new_volunteer)
+        save_volunteers(volunteers)
+
+        flash('Volunteer information submitted successfully', 'success')
+        return redirect(url_for('index'))
+
+    return render_template('volunteer.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
