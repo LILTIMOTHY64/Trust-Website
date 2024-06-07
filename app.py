@@ -79,7 +79,7 @@ def save_volunteers(volunteers):
     with open(volunteer_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
             file,
-            fieldnames=["name", "email", "phone", "address", "identity_proof"],
+            fieldnames=["name", "email", "phone", "address","specialization", "identity_proof"],
         )
         writer.writeheader()
         writer.writerows(volunteers)
@@ -187,6 +187,7 @@ def volunteer():
         email = request.form["email"]
         phone = request.form["phone"]
         address = request.form["address"]
+        specialization = request.form["specialization"]
 
         # Handle file upload
         if "identity_proof" not in request.files:
@@ -211,6 +212,7 @@ def volunteer():
             "email": email,
             "phone": phone,
             "address": address,
+            "specialization": specialization,
             "identity_proof": file_path,
         }
         volunteers.append(new_volunteer)
