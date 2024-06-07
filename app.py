@@ -79,7 +79,14 @@ def save_volunteers(volunteers):
     with open(volunteer_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
             file,
-            fieldnames=["name", "email", "phone", "address","specialization", "identity_proof"],
+            fieldnames=[
+                "name",
+                "email",
+                "phone",
+                "address",
+                "specialization",
+                "identity_proof",
+            ],
         )
         writer.writeheader()
         writer.writerows(volunteers)
@@ -137,8 +144,6 @@ def submit():
             save_requests(requests)
 
             flash("Request submitted successfully", "success")
-            return redirect(url_for("index"))
-
     return render_template("submit.html")
 
 
@@ -219,7 +224,6 @@ def volunteer():
         save_volunteers(volunteers)
 
         flash("Volunteer information submitted successfully", "success")
-        return redirect(url_for("index"))
 
     return render_template("volunteer.html")
 
