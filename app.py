@@ -11,9 +11,11 @@ from werkzeug.utils import secure_filename
 import os
 import csv
 
+# Initialize Flask application
 app = Flask(__name__)
 app.secret_key = "your_secret_key"
 
+# Define upload folder paths
 REQUEST_UPLOAD_FOLDER = r"uploads/REQ_IDs"
 app.config["REQUEST_UPLOAD_FOLDER"] = REQUEST_UPLOAD_FOLDER
 
@@ -23,14 +25,15 @@ app.config["VOLUNTEER_UPLOAD_FOLDER"] = VOLUNTEER_UPLOAD_FOLDER
 CSV_FOLDER = r"uploads"
 app.config["CSV_FOLDER"] = CSV_FOLDER
 
+# Define CSV file paths for requests and volunteers
 data_file = r"uploads/requests.csv"
-
 volunteer_file = r"uploads/volunteer.csv"
 
-# Ensure the upload directory exists
+# Ensure the upload directories exist
 os.makedirs(REQUEST_UPLOAD_FOLDER, exist_ok=True)
+os.makedirs(VOLUNTEER_UPLOAD_FOLDER, exist_ok=True)
 
-
+# Function to load help requests from CSV file
 def load_requests():
     requests = []
     try:
@@ -42,7 +45,7 @@ def load_requests():
         pass
     return requests
 
-
+# Function to save help requests to CSV file
 def save_requests(requests):
     with open(data_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
@@ -62,7 +65,7 @@ def save_requests(requests):
         writer.writeheader()
         writer.writerows(requests)
 
-
+# Function to load volunteer information from CSV file
 def load_volunteers():
     volunteers = []
     try:
@@ -74,7 +77,7 @@ def load_volunteers():
         pass
     return volunteers
 
-
+# Function to save volunteer information to CSV file
 def save_volunteers(volunteers):
     with open(volunteer_file, mode="w", newline="") as file:
         writer = csv.DictWriter(
@@ -91,12 +94,12 @@ def save_volunteers(volunteers):
         writer.writeheader()
         writer.writerows(volunteers)
 
-
+# Route for home page
 @app.route("/")
 def index():
     return render_template("index.html")
 
-
+# Route for submitting a help request
 @app.route("/submit", methods=["GET", "POST"])
 def submit():
     if request.method == "POST":
@@ -113,7 +116,7 @@ def submit():
         requests = load_requests()
         new_id = len(requests) + 1
 
-        # Get the uploaded file
+        # Handle file upload
         if "identity_proof" not in request.files:
             flash("No file part", "error")
             return redirect(request.url)
@@ -122,7 +125,7 @@ def submit():
             flash("No selected file", "error")
             return redirect(request.url)
         if file:
-            # Rename the file to the request ID before saving
+            # Save the uploaded file
             file_ext = os.path.splitext(file.filename)[1]
             filename = secure_filename(f"{name}{file_ext}")
             file_path = os.path.join(app.config["REQUEST_UPLOAD_FOLDER"], filename)
@@ -146,10 +149,11 @@ def submit():
             flash("Request submitted successfully", "success")
     return render_template("submit.html")
 
-
+# Route for admin login
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
+        # Get login credentials
         username = request.form.get("username")
         password = request.form.get("password")
         if username == "admin" and password == "password":
@@ -159,31 +163,30 @@ def admin_login():
             return redirect(url_for("admin_login"))
     return render_template("admin_login.html")
 
-
+# Route for displaying help requests
 @app.route("/requests", methods=["GET", "POST"])
 def requests():
     requests = load_requests()
     return render_template("requests.html", requests=requests)
 
-
+# Route for downloading the requests CSV file
 @app.route("/admin/download-csv")
 def download_csv():
-    # Send the CSV file as a download
     return send_from_directory(
         app.config["CSV_FOLDER"], "requests.csv", as_attachment=True
     )
 
-
+# Route for donation page
 @app.route("/donate")
 def donate():
     return render_template("donate.html")
 
-
+# Route for gallery page
 @app.route("/gallery")
 def gallery():
     return render_template("gallery.html")
 
-
+# Route for volunteer registration
 @app.route("/volunteer", methods=["GET", "POST"])
 def volunteer():
     if request.method == "POST":
@@ -203,6 +206,7 @@ def volunteer():
             flash("No selected file", "error")
             return redirect(request.url)
         if file:
+            # Save the uploaded file
             file_ext = os.path.splitext(file.filename)[1]
             filename = secure_filename(f"{name}{file_ext}")
             file_path = os.path.join(app.config["VOLUNTEER_UPLOAD_FOLDER"], filename)
@@ -227,6 +231,6 @@ def volunteer():
 
     return render_template("volunteer.html")
 
-
+# Run the application
 if __name__ == "__main__":
     app.run(debug=True)
