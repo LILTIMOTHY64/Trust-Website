@@ -30,11 +30,15 @@ body {
 /* Header styling */
 header {
     font-family: 'Georgia', sans-serif; /* Use Montserrat for header text */
-    background-color: rgb(225, 175, 209); /* Use blue from the logo */
+    background-color: #F1675C; /* Use blue from the logo */
     color: #116BA7;;
     padding: 1.5rem;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-image: url('banner.jpeg');
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    background-position: right;
 }
 
 /* Footer styling */
