@@ -127,7 +127,7 @@ def submit():
         if file:
             # Save the uploaded file
             file_ext = os.path.splitext(file.filename)[1]
-            filename = secure_filename(f"{name}{file_ext}")
+            filename = secure_filename(f"{name}_{new_id}{file_ext}")  # Ensure unique filename
             file_path = os.path.join(app.config["REQUEST_UPLOAD_FOLDER"], filename)
             file.save(file_path)
 
@@ -141,7 +141,7 @@ def submit():
                 "year": year,
                 "purpose": purpose,
                 "details": details,
-                "identity_proof": file_path,
+                "identity_proof": filename,
             }
             requests.append(new_request)
             save_requests(requests)
@@ -157,24 +157,36 @@ def admin_login():
         username = request.form.get("username")
         password = request.form.get("password")
         if username == "admin" and password == "password":
-            return redirect(url_for("requests"))
+            return redirect(url_for("admin"))
         else:
             flash("Invalid credentials", "error")  # Flash error message
             return redirect(url_for("admin_login"))
     return render_template("admin_login.html")
 
 # Route for displaying help requests
-@app.route("/requests", methods=["GET", "POST"])
-def requests():
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
     requests = load_requests()
-    return render_template("requests.html", requests=requests)
+    volunteers = load_volunteers()
+    return render_template("admin.html", requests=requests, volunteers=volunteers)
 
-# Route for downloading the requests CSV file
-@app.route("/admin/download-csv")
-def download_csv():
-    return send_from_directory(
-        app.config["CSV_FOLDER"], "requests.csv", as_attachment=True
-    )
+@app.route("/admin/download-requests")
+def admin_download_requests():
+    return send_from_directory(app.config["CSV_FOLDER"], "requests.csv", as_attachment=True)
+
+@app.route("/admin/download-volunteers")
+def admin_download_volunteers():
+    return send_from_directory(app.config["CSV_FOLDER"], "volunteer.csv", as_attachment=True)
+
+
+@app.route('/uploads/REQ_IDs/<filename>')
+def uploaded_request_file(filename):
+    return send_from_directory(app.config['REQUEST_UPLOAD_FOLDER'], filename)
+
+@app.route('/uploads/VOL_IDs/<filename>')
+def uploaded_volunteer_file(filename):
+    return send_from_directory(app.config['VOLUNTEER_UPLOAD_FOLDER'], filename)
+
 
 # Route for donation page
 @app.route("/donate")
@@ -208,7 +220,7 @@ def volunteer():
         if file:
             # Save the uploaded file
             file_ext = os.path.splitext(file.filename)[1]
-            filename = secure_filename(f"{name}{file_ext}")
+            filename = secure_filename(f"{name}_{file_ext}")  # Ensure unique filename
             file_path = os.path.join(app.config["VOLUNTEER_UPLOAD_FOLDER"], filename)
             file.save(file_path)
 
@@ -222,7 +234,7 @@ def volunteer():
             "phone": phone,
             "address": address,
             "specialization": specialization,
-            "identity_proof": file_path,
+            "identity_proof": filename,
         }
         volunteers.append(new_volunteer)
         save_volunteers(volunteers)

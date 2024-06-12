@@ -161,7 +161,7 @@ nav {
 
 /* Button styling */
 button {
-    background-color: #E1AFD1; /* Use blue from the logo */
+    background-color: #F1675C; /* Use blue from the logo */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -256,4 +256,30 @@ a:hover {
 
 .slide-up {
     animation: slideUp 0.8s ease-out;
+}
+
+.custom-btn {
+    background-color: #F1675C; /* Primary color */
+    color: white;
+    border: none;
+}
+
+.custom-btn:hover {
+    background-color: #a83203f1; /* Darker shade for hover */
+    color: white;
+}
+
+.bg-bar {
+    display: flex;
+    justify-content: space-between; /* Align items to left and right */
+    align-items: center; /* Center vertically */
+    background-color: #f1675c; /* Primary color */
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.bg-bar-text {
+    align-items:center;
+    color:white;
+    padding-top: 01rem;
 }
