@@ -1,11 +1,11 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@700&display=swap');
-
+@import url("https://fonts.googleapis.com/css?family=Sofia");
 /* Set full height for HTML and body elements */
 html, body {
     height: 100%;
     margin: 0;
-    font-family: 'Roboto', sans-serif; /* Use Roboto for body text */
+    font-family: 'Sofia', sans-serif; /* Use Roboto for body text */
 }
 
 /* Basic styling for body */
@@ -29,7 +29,7 @@ body {
 
 /* Header styling */
 header {
-    font-family: 'Georgia', sans-serif; /* Use Montserrat for header text */
+    font-family: 'Sofia', sans-serif; /* Use Montserrat for header text */
     background-color: #F1675C; /* Use blue from the logo */
     color: #FECD09;
     padding: 1.5rem;
@@ -43,7 +43,7 @@ header {
 
 /* Footer styling */
 footer {
-    font-family: 'Georgia', sans-serif;
+    font-family: 'Sofia', sans-serif;
     background-color: #F1675C; /* Use blue from the logo */
     color: #FECD09;
     padding: 1rem;
@@ -106,7 +106,7 @@ nav {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    font-family: 'Roboto', sans-serif; /* Use Roboto for nav links */
+    font-family: 'Sofia', sans-serif; /* Use Roboto for nav links */
 }
 
 /* Carousel item styling */
@@ -167,7 +167,7 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Sofia', sans-serif;
     font-size: 1rem;
     transition: background-color 0.3s;
 }
@@ -282,4 +282,28 @@ a:hover {
     align-items:center;
     color:white;
     padding-top: 01rem;
+}
+
+.d-flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.text-container {
+    flex: 1;
+    margin-right: 2rem;
+}
+
+.image-container {
+    flex: 0 0 30%; /* Allocate 30% of the width to the image container */
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.rounded {
+    border-radius: 0.25rem;
 }
