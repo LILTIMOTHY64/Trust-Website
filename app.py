@@ -16,7 +16,7 @@ from functools import wraps
 
 # Initialize Flask application
 app = Flask(__name__)
-app.secret_key = "your_secret_key"
+app.secret_key = "your_secret_key"  # Replace with a secure secret key
 
 # Define upload folder paths
 REQUEST_UPLOAD_FOLDER = r"uploads/REQ_IDs"
@@ -28,7 +28,7 @@ app.config["VOLUNTEER_UPLOAD_FOLDER"] = VOLUNTEER_UPLOAD_FOLDER
 CSV_FOLDER = r"uploads"
 app.config["CSV_FOLDER"] = CSV_FOLDER
 
-# Define CSV file paths for requests,volunteers and users
+# Define CSV file paths for requests, volunteers, and users
 data_file = r"uploads/requests.csv"
 volunteer_file = r"uploads/volunteer.csv"
 users_file = r"uploads/users.csv"
@@ -36,6 +36,7 @@ users_file = r"uploads/users.csv"
 # Ensure the upload directories exist
 os.makedirs(REQUEST_UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(VOLUNTEER_UPLOAD_FOLDER, exist_ok=True)
+
 
 # Function to load help requests from CSV file
 def load_requests():
@@ -48,6 +49,7 @@ def load_requests():
     except FileNotFoundError:
         pass
     return requests
+
 
 # Function to save help requests to CSV file
 def save_requests(requests):
@@ -69,6 +71,7 @@ def save_requests(requests):
         writer.writeheader()
         writer.writerows(requests)
 
+
 # Function to load volunteer information from CSV file
 def load_volunteers():
     volunteers = []
@@ -80,6 +83,7 @@ def load_volunteers():
     except FileNotFoundError:
         pass
     return volunteers
+
 
 # Function to save volunteer information to CSV file
 def save_volunteers(volunteers):
@@ -98,6 +102,8 @@ def save_volunteers(volunteers):
         writer.writeheader()
         writer.writerows(volunteers)
 
+
+# Function to load user information from CSV file
 def load_users():
     users = []
     try:
@@ -109,10 +115,13 @@ def load_users():
         pass
     return users
 
+
+# Function to verify password using Werkzeug's check_password_hash
 def verify_password(stored_password, provided_password):
     return check_password_hash(stored_password, provided_password)
 
-# Login required decorator
+
+# Login required decorator to protect admin routes
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -120,12 +129,15 @@ def login_required(f):
             flash("You must be logged in to access this page", "error")
             return redirect(url_for("admin_login"))
         return f(*args, **kwargs)
+
     return decorated_function
+
 
 # Route for home page
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 # Route for submitting a help request
 @app.route("/submit", methods=["GET", "POST"])
@@ -155,7 +167,9 @@ def submit():
         if file:
             # Save the uploaded file
             file_ext = os.path.splitext(file.filename)[1]
-            filename = secure_filename(f"{name}_{new_id}{file_ext}")  # Ensure unique filename
+            filename = secure_filename(
+                f"{name}_{new_id}{file_ext}"
+            )  # Ensure unique filename
             file_path = os.path.join(app.config["REQUEST_UPLOAD_FOLDER"], filename)
             file.save(file_path)
 
@@ -177,6 +191,7 @@ def submit():
             flash("Request submitted successfully", "success")
     return render_template("submit.html")
 
+
 # Route for admin login
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():
@@ -191,50 +206,57 @@ def admin_login():
             session["admin_logged_in"] = True
             requests = load_requests()
             volunteers = load_volunteers()
-            return render_template("admin.html", requests=requests, volunteers=volunteers)
+            return render_template(
+                "admin.html", requests=requests, volunteers=volunteers
+            )
         else:
             flash("Invalid credentials", "error")
             return redirect(url_for("admin_login"))
 
     return render_template("admin_login.html")
 
-# Route for admin page with login required
-'''@app.route("/admin", methods=["GET", "POST"])
-@login_required
-def admin():
-    requests = load_requests()
-    volunteers = load_volunteers()
-    return render_template("admin.html", requests=requests, volunteers=volunteers)
-'''
+
 # Route for downloading requests CSV with login required
 @app.route("/admin/download-requests")
 @login_required
 def admin_download_requests():
-    return send_from_directory(app.config["CSV_FOLDER"], "requests.csv", as_attachment=True)
+    return send_from_directory(
+        app.config["CSV_FOLDER"], "requests.csv", as_attachment=True
+    )
+
 
 # Route for downloading volunteers CSV with login required
 @app.route("/admin/download-volunteers")
 @login_required
 def admin_download_volunteers():
-    return send_from_directory(app.config["CSV_FOLDER"], "volunteer.csv", as_attachment=True)
+    return send_from_directory(
+        app.config["CSV_FOLDER"], "volunteer.csv", as_attachment=True
+    )
 
-@app.route('/uploads/REQ_IDs/<filename>')
+
+# Route for accessing uploaded request files
+@app.route("/uploads/REQ_IDs/<filename>")
 def uploaded_request_file(filename):
-    return send_from_directory(app.config['REQUEST_UPLOAD_FOLDER'], filename)
+    return send_from_directory(app.config["REQUEST_UPLOAD_FOLDER"], filename)
 
-@app.route('/uploads/VOL_IDs/<filename>')
+
+# Route for accessing uploaded volunteer files
+@app.route("/uploads/VOL_IDs/<filename>")
 def uploaded_volunteer_file(filename):
-    return send_from_directory(app.config['VOLUNTEER_UPLOAD_FOLDER'], filename)
+    return send_from_directory(app.config["VOLUNTEER_UPLOAD_FOLDER"], filename)
+
 
 # Route for donation page
 @app.route("/donate")
 def donate():
     return render_template("donate.html")
 
+
 # Route for gallery page
 @app.route("/gallery")
 def gallery():
     return render_template("gallery.html")
+
 
 # Route for volunteer registration
 @app.route("/volunteer", methods=["GET", "POST"])
@@ -280,6 +302,7 @@ def volunteer():
         flash("Volunteer information submitted successfully", "success")
 
     return render_template("volunteer.html")
+
 
 # Run the application
 if __name__ == "__main__":
