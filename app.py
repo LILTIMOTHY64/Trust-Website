@@ -6,10 +6,13 @@ from flask import (
     url_for,
     send_from_directory,
     flash,
+    session,
 )
 from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import csv
+from functools import wraps
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -25,9 +28,10 @@ app.config["VOLUNTEER_UPLOAD_FOLDER"] = VOLUNTEER_UPLOAD_FOLDER
 CSV_FOLDER = r"uploads"
 app.config["CSV_FOLDER"] = CSV_FOLDER
 
-# Define CSV file paths for requests and volunteers
+# Define CSV file paths for requests,volunteers and users
 data_file = r"uploads/requests.csv"
 volunteer_file = r"uploads/volunteer.csv"
+users_file = r"uploads/users.csv"
 
 # Ensure the upload directories exist
 os.makedirs(REQUEST_UPLOAD_FOLDER, exist_ok=True)
@@ -94,6 +98,30 @@ def save_volunteers(volunteers):
         writer.writeheader()
         writer.writerows(volunteers)
 
+def load_users():
+    users = []
+    try:
+        with open(users_file, mode="r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                users.append(row)
+    except FileNotFoundError:
+        pass
+    return users
+
+def verify_password(stored_password, provided_password):
+    return check_password_hash(stored_password, provided_password)
+
+# Login required decorator
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "admin_logged_in" not in session or not session["admin_logged_in"]:
+            flash("You must be logged in to access this page", "error")
+            return redirect(url_for("admin_login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
 # Route for home page
 @app.route("/")
 def index():
@@ -153,31 +181,42 @@ def submit():
 @app.route("/admin_login", methods=["GET", "POST"])
 def admin_login():
     if request.method == "POST":
-        # Get login credentials
         username = request.form.get("username")
         password = request.form.get("password")
-        if username == "admin" and password == "password":
-            return redirect(url_for("admin"))
+
+        users = load_users()
+        user = next((u for u in users if u["username"] == username), None)
+
+        if user and verify_password(user["password"], password):
+            session["admin_logged_in"] = True
+            requests = load_requests()
+            volunteers = load_volunteers()
+            return render_template("admin.html", requests=requests, volunteers=volunteers)
         else:
-            flash("Invalid credentials", "error")  # Flash error message
+            flash("Invalid credentials", "error")
             return redirect(url_for("admin_login"))
+
     return render_template("admin_login.html")
 
-# Route for displaying help requests
-@app.route("/admin", methods=["GET", "POST"])
+# Route for admin page with login required
+'''@app.route("/admin", methods=["GET", "POST"])
+@login_required
 def admin():
     requests = load_requests()
     volunteers = load_volunteers()
     return render_template("admin.html", requests=requests, volunteers=volunteers)
-
+'''
+# Route for downloading requests CSV with login required
 @app.route("/admin/download-requests")
+@login_required
 def admin_download_requests():
     return send_from_directory(app.config["CSV_FOLDER"], "requests.csv", as_attachment=True)
 
+# Route for downloading volunteers CSV with login required
 @app.route("/admin/download-volunteers")
+@login_required
 def admin_download_volunteers():
     return send_from_directory(app.config["CSV_FOLDER"], "volunteer.csv", as_attachment=True)
-
 
 @app.route('/uploads/REQ_IDs/<filename>')
 def uploaded_request_file(filename):
@@ -186,7 +225,6 @@ def uploaded_request_file(filename):
 @app.route('/uploads/VOL_IDs/<filename>')
 def uploaded_volunteer_file(filename):
     return send_from_directory(app.config['VOLUNTEER_UPLOAD_FOLDER'], filename)
-
 
 # Route for donation page
 @app.route("/donate")
