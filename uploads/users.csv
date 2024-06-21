@@ -1,2 +1,2 @@
 username,password
-admin,scrypt:32768:8:1$VafbtaLLNihNMfY7$51176e3fe3cfdbcb41ce04a1de72f6e36f9bde6d656fa0477d9b7544a9f9366a64a2a68bc85fcf2440ab23a7589735947d35938a39e37123ce0f8d2a136fabce
+admin,password

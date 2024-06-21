@@ -1,11 +1,10 @@
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Montserrat:wght@700&display=swap');
-@import url("https://fonts.googleapis.com/css?family=Sofia");
+@import url("https://fonts.googleapis.com/css?family=Trirong");
 /* Set full height for HTML and body elements */
 html, body {
     height: 100%;
     margin: 0;
-    font-family: 'Sofia', sans-serif; /* Use Roboto for body text */
+    font-family: 'Poppins', sans-serif; /* Use Poppins for body text */
 }
 
 /* Basic styling for body */
@@ -29,7 +28,7 @@ body {
 
 /* Header styling */
 header {
-    font-family: 'Sofia', sans-serif; /* Use Montserrat for header text */
+    font-family: 'Poppins', sans-serif; /* Use Montserrat for header text */
     background-color: #F1675C; /* Use blue from the logo */
     color: #FECD09;
     padding: 1.5rem;
@@ -40,10 +39,46 @@ header {
     background-repeat: no-repeat;
     background-position: right;
 }
+/* Media query for larger screens (PC) */
+@media (min-width: 768px) {
+    header {
+        height: 600px; /* Increase height for larger screens */
+    }
 
+    .header-content {
+        font-size: 3rem; /* Increase font size for larger screens */
+    }
+}
+
+/* Media query for portrait mode on smaller screens (mobile devices) */
+@media (max-width: 767px) and (orientation: portrait) {
+    header {
+        height: 500px; /* Decrease height for smaller screens */
+        background: none; /* Remove the background image */
+        padding: 1rem; /* Adjust padding for smaller screens */
+        background-color: #F1675C; /* Use blue from the logo */
+    }
+
+    .header-content {
+        font-size: 1.2rem; /* Decrease font size for smaller screens */
+        max-width: 100%; /* Increase max-width for better text fitting */
+        word-wrap: break-word; /* Allow long words to break to the next line */
+    }
+    
+    .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    }
+    
+    .image-container {
+        display: none; /* Hide the entire container */
+    }
+
+}
 /* Footer styling */
 footer {
-    font-family: 'Sofia', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #F1675C; /* Use blue from the logo */
     color: #FECD09;
     padding: 1rem;
@@ -66,7 +101,7 @@ footer {
 
 /* Logo styling */
 .logo {
-    max-width: 150px; /* Set the maximum width of the logo */
+    max-width: 200px; /* Set the maximum width of the logo */
     margin-bottom: 10px; /* Add some margin below the logo */
 }
 
@@ -106,12 +141,12 @@ nav {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    font-family: 'Sofia', sans-serif; /* Use Roboto for nav links */
+    font-family: 'Poppins', sans-serif; /* Use Poppins for nav links */
 }
 
 /* Carousel item styling */
 .carousel-item {
-    height: 475px; /* Set a fixed height for the carousel */
+    height: 500px; /* Set a fixed height for the carousel */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -167,7 +202,7 @@ button {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'Sofia', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     transition: background-color 0.3s;
 }
